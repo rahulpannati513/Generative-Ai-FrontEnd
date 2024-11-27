@@ -13,8 +13,9 @@ const AudioUploader = () => {
     const formData = new FormData();
     formData.append("file", file);
 
+    const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
     const apiEndpoint = "/api/v1/send-MultiLangAudio";
-    const apiUrl = apiEndpoint;
+    const apiUrl = apiBaseUrl + apiEndpoint;
 
     try {
       const response = await axios.post(apiUrl, formData, {
