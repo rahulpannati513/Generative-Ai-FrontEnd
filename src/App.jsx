@@ -25,7 +25,7 @@ function App() {
     try {
       // Send request to backend to get AI response
       const response = await axios.get(
-        import.meta.env.VITE_API_BASE_URL + "/api/v1/chat",
+        import.meta.env.VITE_API_BASE_URL + "api/v1/chat",
         {
           params: { message: userInput },
         }
