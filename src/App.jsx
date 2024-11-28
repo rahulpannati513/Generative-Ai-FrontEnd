@@ -66,7 +66,7 @@ function App() {
       parts.push(response.slice(lastIndex));
     }
 
-    return parts;
+    return <>{parts}</>; // Return wrapped parts as a fragment
   };
 
   return (
@@ -83,12 +83,18 @@ function App() {
             placeholder="Type your question or description here..."
             rows="6"
             className="w-full p-4 text-lg text-gray-300 border border-[#333333] rounded-lg mb-4 bg-[#2A2A2A] placeholder-[#B0B0B0] overflow-y-auto resize-none focus:outline-none focus:ring-2 focus:ring-[#444444]"
+            aria-label="Input field for question or description"
           ></textarea>
           <button
             onClick={handleResponse}
             className="w-full py-3 bg-[#444444] text-white text-lg rounded-lg hover:bg-[#333333] transition-all duration-300 transform hover:scale-105 hover:shadow-lg"
+            aria-live="polite" // Allow the screen reader to notify the user of updates
           >
-            {isLoading ? "Thinking..." : "Get AI Response"}
+            {isLoading ? (
+              <span className="animate-spin">🌀</span>
+            ) : (
+              "Get AI Response"
+            )}
           </button>
 
           {aiResponse && !isLoading && (
@@ -110,6 +116,7 @@ function App() {
           <Link
             to="/image"
             className="bg-gradient-to-br from-[#1D1D1D] to-[#2A2A2A] p-8 rounded-lg shadow-lg hover:bg-gradient-to-bl from-[#333333] to-[#2A2A2A] transform hover:scale-105 hover:shadow-2xl transition-all duration-300"
+            aria-label="DALL-E 3 image generation model"
           >
             <h3 className="text-2xl font-semibold text-white mb-4 opacity-70">
               DALL-E 3
@@ -128,6 +135,7 @@ function App() {
           <Link
             to="/audio"
             className="bg-gradient-to-br from-[#1D1D1D] to-[#2A2A2A] p-8 rounded-lg shadow-lg hover:bg-gradient-to-bl from-[#333333] to-[#2A2A2A] transform hover:scale-105 hover:shadow-2xl transition-all duration-300"
+            aria-label="Audio-to-Text AI model"
           >
             <h3 className="text-2xl font-semibold text-white mb-4 opacity-70">
               Audio-to-Text
@@ -152,6 +160,7 @@ function App() {
           <Link
             to="/recipe"
             className="bg-gradient-to-br from-[#1D1D1D] to-[#2A2A2A] p-8 rounded-lg shadow-lg hover:bg-gradient-to-bl from-[#333333] to-[#2A2A2A] transform hover:scale-105 hover:shadow-2xl transition-all duration-300"
+            aria-label="AI Recipe Generator"
           >
             <h3 className="text-2xl font-semibold text-white mb-4 opacity-70">
               AI Recipe Generator

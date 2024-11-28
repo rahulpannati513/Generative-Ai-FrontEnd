@@ -2,14 +2,24 @@ import { useState } from "react";
 import axios from "axios";
 
 const AudioUploader = () => {
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(null);
   const [transcription, setTranscription] = useState("");
+  const [loading, setLoading] = useState(false); // For loading state
+  const [error, setError] = useState(""); // For error state
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
 
   const handleUpload = async () => {
+    if (!file) {
+      setError("Please select a file to upload.");
+      return;
+    }
+
+    setLoading(true); // Start loading
+    setError(""); // Clear any previous error
+
     const formData = new FormData();
     formData.append("file", file);
 
@@ -23,10 +33,15 @@ const AudioUploader = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-      setTranscription(response.data);
-      console.log("Transcription", response.data);
+
+      // Assuming the response has transcription directly
+      // Adjust according to the API response structure
+      setTranscription(response.data.transcription || response.data); // Ensure you're using the right field
+      setLoading(false); // Stop loading after successful upload
     } catch (error) {
       console.error("Error Transcribing audio", error);
+      setError("Failed to transcribe the audio. Please try again.");
+      setLoading(false); // Stop loading on error
     }
   };
 
@@ -49,9 +64,13 @@ const AudioUploader = () => {
         <button
           onClick={handleUpload}
           className="w-full sm:w-auto text-xl bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          disabled={loading} // Disable button during loading
         >
-          Upload and Transcribe
+          {loading ? "Uploading..." : "Upload and Transcribe"}
         </button>
+
+        {/* Error Message */}
+        {error && <div className="mt-4 text-red-500 text-lg">{error}</div>}
 
         {/* Transcription Result Section */}
         <div className="bg-[#2f2f2f] w-full sm:w-3/4 md:w-2/3 m-6 p-4 rounded-2xl mt-6">

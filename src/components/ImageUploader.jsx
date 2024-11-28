@@ -10,10 +10,12 @@ const ImageUploader = () => {
   const [showGuidelines, setShowGuidelines] = useState(false);
   const guidelinesRef = useRef(null);
 
+  // Handle changes in the message input
   const handleInputChange = (e) => {
     setMessage(e.target.value);
   };
 
+  // Generate image based on user description
   const handleGenerateImage = async () => {
     if (!message.trim()) {
       setError("Please enter a description to generate an image.");
@@ -25,23 +27,35 @@ const ImageUploader = () => {
     setImageUrl(""); // Reset image URL to hide previous images
     const apiEndpoint = "/api/v1/generate-image";
     const apiUrl = import.meta.env.VITE_API_BASE_URL + apiEndpoint;
+
     try {
       const response = await axios.get(apiUrl, {
         params: { message: message },
       });
-      setImageUrl(response?.data?.result?.output?.url || "");
+
+      // Adjust this to match the actual response structure of your API
+      const generatedImageUrl = response?.data?.result?.output?.url || "";
+
+      if (generatedImageUrl) {
+        setImageUrl(generatedImageUrl);
+        setImageLoading(true); // Reset image loading state when new image is fetched
+      } else {
+        setError("Failed to generate an image. Please try again.");
+      }
+
       setLoading(false);
-      setImageLoading(true); // Reset image loading state when new image is fetched
     } catch (err) {
-      setError("Failed to generate image. Please try again.", err.getMessage());
+      setError("Error occurred while generating image. Please try again.");
       setLoading(false);
     }
   };
 
+  // Image load handler to hide the loading spinner once the image is loaded
   const handleImageLoad = () => {
-    setImageLoading(false); // Set image loading to false when the image is fully loaded
+    setImageLoading(false);
   };
 
+  // Download the generated image
   const downloadImage = async (e) => {
     e.preventDefault();
     const imageUrl = e.target.href;
@@ -63,14 +77,14 @@ const ImageUploader = () => {
     }
   };
 
-  // Close the guidelines if the user clicks outside
+  // Close the guidelines if clicked outside the guidelines box
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
         guidelinesRef.current &&
         !guidelinesRef.current.contains(event.target)
       ) {
-        setShowGuidelines(false); // Close the guidelines if clicked outside
+        setShowGuidelines(false); // Close guidelines if clicked outside
       }
     };
 
@@ -133,6 +147,7 @@ const ImageUploader = () => {
           <button
             onClick={handleGenerateImage}
             className="w-full sm:w-auto text-xl bg-indigo-600 hover:bg-indigo-700 text-white py-4 px-8 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            disabled={loading} // Disable button while loading
           >
             {loading ? "Generating..." : "Generate Image"}
           </button>

@@ -32,7 +32,8 @@ const RecipeUploader = () => {
       setRecipe(response.data); // Set the recipe data received from the API
       setLoading(false);
     } catch (err) {
-      setError("Error fetching recipe. Please try again later.", err);
+      setError("Error fetching recipe. Please try again later.");
+      console.error(err);
       setLoading(false);
     }
   };
@@ -103,6 +104,7 @@ const RecipeUploader = () => {
               onChange={(e) => setCuisine(e.target.value)}
               className="w-full mt-1 px-4 py-3 border border-[#444444] rounded-lg bg-[#3C3F47] text-white placeholder-[#B0B0B0] focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="e.g. Italian, Indian"
+              aria-label="Cuisine Type"
             />
           </div>
 
@@ -121,6 +123,7 @@ const RecipeUploader = () => {
               onChange={(e) => setIngredients(e.target.value)}
               className="w-full mt-1 px-4 py-3 border border-[#444444] rounded-lg bg-[#3C3F47] text-white placeholder-[#B0B0B0] focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="e.g. chicken, garlic, ginger"
+              aria-label="Ingredients"
             />
           </div>
 
@@ -139,6 +142,7 @@ const RecipeUploader = () => {
               onChange={(e) => setDietaryRestrictions(e.target.value)}
               className="w-full mt-1 px-4 py-3 border border-[#444444] rounded-lg bg-[#3C3F47] text-white placeholder-[#B0B0B0] focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="e.g. vegetarian, gluten-free"
+              aria-label="Dietary Restrictions"
             />
           </div>
 
@@ -146,6 +150,7 @@ const RecipeUploader = () => {
           <button
             type="submit"
             className="w-full py-3 bg-blue-600 text-white rounded-lg mt-6 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            disabled={loading} // Disable button while loading
           >
             {loading ? "Fetching Recipe..." : "Get Recipe"}
           </button>
