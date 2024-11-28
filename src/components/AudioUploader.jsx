@@ -14,7 +14,7 @@ const AudioUploader = () => {
     formData.append("file", file);
 
     const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-    const apiEndpoint = "api/v1/send-MultiLangAudio";
+    const apiEndpoint = "/api/v1/send-MultiLangAudio";
     const apiUrl = apiBaseUrl + apiEndpoint;
 
     try {

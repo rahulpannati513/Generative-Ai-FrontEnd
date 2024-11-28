@@ -17,7 +17,7 @@ const RecipeUploader = () => {
     setError(""); // Reset any previous errors
 
     try {
-      const apiEndpoint = "api/v1/get-recipe";
+      const apiEndpoint = "/api/v1/get-recipe";
       const apiUrl = import.meta.env.VITE_API_BASE_URL + apiEndpoint;
       const response = await axios.get(apiUrl, {
         params: {
